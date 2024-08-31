@@ -1,0 +1,19 @@
+{
+  "name": "css-project-setup",
+  "version": "1.0.0",
+  "description": "A package to initialize a new project",
+  "main": "index.js",
+  "bin": {
+    "init-project": "./index.js"
+  },
+  "dependencies": {
+    "commander": "^9.4.1",
+    "fs-extra": "^10.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
