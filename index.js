@@ -37,7 +37,10 @@ function createFolderStructure() {
     });
 }
 
-
+/**
+ * Copies the ESLint configuration and custom rules files to the current working directory.
+ * @function
+ */
 function copyESLintConfig() {
     console.log('Copying ESLint config files...');
 
@@ -102,7 +105,7 @@ function initializeProject() {
 
 // Commander setup for CLI options
 program
-    .version('1.0.0')
+    .version('1.0.3')
     .description('Initialize a new project with a .env file, ESLint, and folder structure for custom ESLint rules including custom rules. WARNING: This script assumes that you have installed SvelteKit and Node.js.')
     .action(() => {
         initializeProject();
