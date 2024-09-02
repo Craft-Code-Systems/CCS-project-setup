@@ -37,8 +37,9 @@ function createFolderStructure() {
     });
 }
 
+
 /**
- * Copies the ESLint configuration and custom rules files to the current working directory.
+ * Copies the ESLint configuration and custom rules files from the setup script's folder to the current working directory.
  * @function
  */
 function copyESLintConfig() {
@@ -46,29 +47,22 @@ function copyESLintConfig() {
 
     const eslintConfigSrc = path.join(__dirname, 'eslint.config.js');
     const eslintConfigDest = path.join(process.cwd(), 'eslint.config.js');
+    console.log(`Copying ESLint config from ${eslintConfigSrc} to ${eslintConfigDest}`);
     fs.copySync(eslintConfigSrc, eslintConfigDest);
     console.log('eslint.config.js copied.');
 
     const customRulesSrc = path.join(__dirname, 'eslint-plugins');
     const customRulesDest = path.join(process.cwd(), 'eslint-plugins');
+    console.log(`Copying custom rules from ${customRulesSrc} to ${customRulesDest}`);
 
     if (fs.existsSync(customRulesSrc)) {
         fs.copySync(customRulesSrc, customRulesDest);
         console.log('Custom ESLint rules copied.');
-
-        // Rename the index.js inside custom-rules to avoid conflicts
-        const oldIndexPath = path.join(customRulesDest, 'custom-rules/index.js');
-        const newIndexPath = path.join(customRulesDest, 'custom-rules/rules-index.js');
-        if (fs.existsSync(oldIndexPath)) {
-            fs.renameSync(oldIndexPath, newIndexPath);
-            console.log(`Renamed custom rule index.js to rules-index.js`);
-        } else {
-            console.error('Custom rule index.js not found to rename.');
-        }
     } else {
         console.error(`Error: Directory ${customRulesSrc} does not exist.`);
     }
 }
+
 
 /**
  * Installs ESLint and the necessary plugins, and then copies the ESLint config file and custom rules
@@ -105,7 +99,7 @@ function initializeProject() {
 
 // Commander setup for CLI options
 program
-    .version('1.0.3')
+    .version('1.0.7')
     .description('Initialize a new project with a .env file, ESLint, and folder structure for custom ESLint rules including custom rules. WARNING: This script assumes that you have installed SvelteKit and Node.js.')
     .action(() => {
         initializeProject();

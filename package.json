@@ -1,6 +1,6 @@
 {
   "name": "css-project-setup",
-  "version": "1.0.3",
+  "version": "1.0.7",
   "description": "A project setup tool",
   "main": "index.js",
   "bin": {
@@ -17,8 +17,8 @@
   "files": [
     "index.js",
     "eslint.config.js",
-    "eslint-plugins/custom-rules/rules-index.js"
+    "eslint-plugins/"
   ],
-  "author": "",
+  "author": "E. Hammer",
   "license": "ISC"
 }
