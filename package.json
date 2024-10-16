@@ -1,6 +1,6 @@
 {
   "name": "css-project-setup",
-  "version": "1.0.7",
+  "version": "1.0.9",
   "description": "A project setup tool",
   "main": "index.js",
   "bin": {

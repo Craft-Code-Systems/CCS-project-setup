@@ -99,7 +99,7 @@ function initializeProject() {
 
 // Commander setup for CLI options
 program
-    .version('1.0.7')
+    .version('1.0.9')
     .description('Initialize a new project with a .env file, ESLint, and folder structure for custom ESLint rules including custom rules. WARNING: This script assumes that you have installed SvelteKit and Node.js.')
     .action(() => {
         initializeProject();

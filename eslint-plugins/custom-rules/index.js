@@ -4,25 +4,27 @@ function isSnakeCase(name) {
 
 export const rules = {
 'uppercase-const': {
-    meta: {
-      type: "suggestion",
-      docs: {
-        description: "require const variables to be in uppercase",
-        category: "Stylistic Issues",
-        recommended: false,
-      },
-      schema: [],
-      messages: {
-        uppercaseConst: "Const '{{name}}' should be in uppercase.",
-      },
+  meta: {
+    type: "suggestion",
+    docs: {
+      description: "require const variables to be in uppercase",
+      category: "Stylistic Issues",
+      recommended: false,
     },
-    create(context) {
-      return {
-        VariableDeclaration(node) {
-          if (node.kind === "const") {
-            node.declarations.forEach((declaration) => {
+    schema: [],
+    messages: {
+      uppercaseConst: "Const '{{name}}' should be in uppercase.",
+    },
+  },
+  create(context) {
+    return {
+      VariableDeclaration(node) {
+        if (node.kind === "const") {
+          node.declarations.forEach((declaration) => {
+            // Check if declaration.id and declaration.id.name exist
+            if (declaration.id && declaration.id.name) {
               const variableName = declaration.id.name;
-              if (variableName !== variableName.toUpperCase()) {
+              if (typeof variableName === 'string' && variableName !== variableName.toUpperCase()) {
                 context.report({
                   node: declaration.id,
                   messageId: "uppercaseConst",
@@ -31,12 +33,13 @@ export const rules = {
                   },
                 });
               }
-            });
-          }
-        },
-      };
-    },
+            }
+          });
+        }
+      },
+    };
   },
+},
   'no-camelcase': {
     meta: {
       type: "suggestion",

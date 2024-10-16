@@ -9,19 +9,29 @@ import * as customRules from './eslint-plugins/custom-rules/index.js';
 /** @type {import('eslint').Linter.Config[]} */
 export default [
   js.configs.recommended,
-  ...svelte.configs['flat/recommended'],
+  ...svelte.configs['flat/recommended'], // Svelte recommended config
   prettier,
-  ...svelte.configs['flat/prettier'],
+  ...svelte.configs['flat/prettier'],    // Svelte Prettier config
   {
     languageOptions: {
       globals: {
         ...globals.browser,
         ...globals.node,
       },
+      parserOptions: {
+        ecmaVersion: 2021,
+        sourceType: 'module',
+      },
     },
   },
   {
     ignores: ['build/', '.svelte-kit/', 'dist/'],
+  },
+  {
+    files: ['*.svelte'], // Specify that it applies to Svelte files
+    plugins: {
+      svelte: svelte,
+    },
   },
   {
     plugins: {
