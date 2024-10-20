@@ -25,18 +25,14 @@ export default [
     },
   },
   {
-    ignores: ['build/', '.svelte-kit/', 'dist/'],
+    ignores: ['build/', '.svelte-kit/', 'dist/', 'node_modules/'], // Add common ignores globally
   },
   {
-    files: ['*.svelte'], // Specify that it applies to Svelte files
+    // Apply ESLint rules only to the `src` and `route` folders
+    files: ['src/**/*', 'route/**/*'],  // Target src and route folders with all their subfolders and files
     plugins: {
       svelte: svelte,
-    },
-  },
-  {
-    plugins: {
-      // Register your custom plugin
-      custom: customRules,
+      custom: customRules,  // Register your custom plugin
     },
     rules: {
       // Use the custom rules
@@ -44,6 +40,8 @@ export default [
       'custom/no-camelcase': 'warn',
       'custom/function-require-comment': 'off',
       'custom/function-max-lines': 'warn',
+      'custom/function-naming-convention': 'warn',
+      'custom/class-naming-convention': 'warn',
       'no-unused-vars': 'off', // Turn off the ESLint rule for unused variables
     },
   },
