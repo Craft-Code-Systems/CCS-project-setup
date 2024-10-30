@@ -4,9 +4,21 @@ import globals from 'globals'; // Import known global functions
 const jsBuiltInClasses = ['Array', 'Object', 'HTMLElement', 'Promise', 'Date', 'Error', 'String']; // JavaScript built-in classes
 const svelteBuiltInClasses = ['SvelteComponent']; // Svelte built-in classes
 const svelteBuiltInFunctions = ['onMount', 'beforeUpdate', 'afterUpdate', 'onDestroy']; // Svelte built-in functions
+const jsBuiltInMethods = ['appendChild', 'removeChild', 'insertBefore', 'replaceChild', 'setAttribute', 'getAttribute', 'createElement', 'textContent', 'forEach', 'getElementById', 'innerHTML', 'querySelectorAll', 'createWriteStream', 'Console', 'fs', 'toLocaleTimeString', 'querySelectorAll'];
+
 
 function isSnakeCase(name) {
   return /^[a-z]+(_[a-z]+)*$/.test(name);
+}
+
+function isGlobalObjectMethod(node) {
+  if (node.parent && node.parent.type === 'MemberExpression' && node.parent.property === node) {
+    const objectName = node.parent.object.name;
+
+    // If the identifier is a method of a known global object or a recognized built-in method, ignore it
+    return jsBuiltInClasses.includes(objectName) || jsBuiltInMethods.includes(node.name) || svelteBuiltInFunctions.includes(node.name) || globals.browser[objectName];
+  }
+  return false;
 }
 
 export const rules = {
@@ -63,35 +75,13 @@ export const rules = {
   create(context) {
     const globalVariables = new Set(Object.keys(globals.browser).concat(Object.keys(globals.es2021)));
 
-    function isGlobalObjectMethod(node) {
-      // Check if the identifier is part of a MemberExpression (e.g., Date.getMonth)
-      if (node.parent && node.parent.type === 'MemberExpression' && node.parent.object) {
-        const objectName = node.parent.object.name;
-        // If the object is a global object (e.g., Date, Array), ignore its methods
-        return globalVariables.has(objectName);
-      }
-      return false;
-    }
-
-    function isGlobalVariable(variableName) {
-      const sourceCode = context.getSourceCode();
-      const scope = sourceCode.scopeManager.globalScope;
-
-      if (!scope) {
-        return false; // No global scope found
-      }
-
-      // Check if the variable is in the global scope
-      return scope.variables.some(variable => variable.name === variableName);
-    }
-
     return {
       Identifier(node) {
         const variableName = node.name;
         const parent = node.parent;
 
-        // Ignore global variables (e.g., Date, Array) or methods of global objects (e.g., Date.getMonth)
-        if (globalVariables.has(variableName) || isGlobalObjectMethod(node) || isGlobalVariable(variableName)) {
+        // Ignore known global variables, global object methods, or known built-in methods
+        if (globalVariables.has(variableName) || isGlobalObjectMethod(node)) {
           return;
         }
 
